@@ -24,4 +24,5 @@ data Uhh = Uhh {
     uhhSteps  :: Int
 } deriving Show
 
-makeUhh campos lookat = Uhh campos lookat
+newUhh campos lookat steps = do
+    return (Uhh campos lookat steps)

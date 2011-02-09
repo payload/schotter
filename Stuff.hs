@@ -1,4 +1,4 @@
-module Stuff (display, reshape, keyboardMouse, motion, makeUhh) where
+module Stuff (display, reshape, keyboardMouse, motion) where
 import Graphics.Rendering.OpenGL
 import Graphics.UI.GLUT 
 import Data.IORef
@@ -7,7 +7,7 @@ import Display
 import Uhh
 
 kmMoveAction f uhh = 
-    modifyIORef uhh (\u -> Uhh (f $ uhhCamPos u) (uhhLookAt u) (uhhSteps u) )
+    modifyIORef uhh (\u -> u { uhhCamPos = f $ uhhCamPos u } )
     
 -- keyboardMouse
 keyboardMouse u (Char ' ') Down _ _ = do
