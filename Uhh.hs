@@ -13,12 +13,15 @@ vecLeft  (Vec x y z) = Vec (x-1) y z
 vecRight (Vec x y z) = Vec (x+1) y z
 vecUp    (Vec x y z) = Vec x (y-1) z
 vecDown  (Vec x y z) = Vec x (y+1) z
+vecForward (Vec x y z) = Vec x y (z+1)
+vecBackward (Vec x y z) = Vec x y (z-1)
 
 vec2Vertex3 (Vec x y z) = Vertex3 x y z
 
 data Uhh = Uhh {
     uhhCamPos :: Vec,
-    uhhLookAt :: Vec
+    uhhLookAt :: Vec,
+    uhhSteps  :: Int
 } deriving Show
 
 makeUhh campos lookat = Uhh campos lookat

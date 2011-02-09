@@ -8,7 +8,8 @@ import Stuff
 main = do
     uhh <- newIORef (makeUhh 
         (makeVec (-10) 10 (-10))
-        (makeVec 0 0 0))
+        (makeVec 0 0 0)
+        (4))
     (progname, _) <- getArgsAndInitialize
     initialDisplayMode $= [ RGBAMode, WithDepthBuffer ]
     createWindow progname

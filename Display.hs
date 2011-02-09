@@ -18,11 +18,14 @@ display u = do
         (vec2Vertex3 $ uhhCamPos uhh)
         (Vertex3 (0::GLdouble) 0 0)
         (Vector3 (0::GLdouble) 1 0)
-    render
+    render uhh
     flush
         
-render = do
-    mapM_ renderVoxel (voxelize 3 9)
+render uhh = do
+    putStrLn $ show $ length voxels
+    mapM_ renderVoxel voxels
+    where
+        voxels = voxelize 3 (uhhSteps uhh)
 
 renderVoxel (x, y, z, s) =
     preservingMatrix $ do
@@ -40,7 +43,7 @@ voxelize r steps =
     filter myFilter (grid (-r) r step)
     where
         step = ((r*2) / (steps2-1))
-        steps2 = max steps 2
+        steps2 = max 2 $ int2Float steps
         myFilter = voxelFilter $ inside r
 
 voxelFilter inside c@(x, y, z) =
