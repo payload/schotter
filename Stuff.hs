@@ -25,8 +25,10 @@ keyboardMouse uhh (Char '<') Down _ _ = do
 keyboardMouse uhh (Char '>') Down _ _ = do
     modifyIORef uhh (\u -> u { uhhSteps = (uhhSteps u) + 1 } )
 
-keyboardMouse uhh key state modifiers position = do
+keyboardMouse uhh key Down modifiers position = do
     putStrLn $ show key
+    
+keyboardMouse uhh key state modifiers position = return ()
 -- keyboardMouse
 
 reshape s@(Size w h) = do
