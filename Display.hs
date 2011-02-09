@@ -9,8 +9,8 @@ import Cube
 import Utils
 import Uhh
 
-display u = do
-    uhh <- readIORef u
+display uhhref = do
+    uhh <- readIORef uhhref
     clear [ ColorBuffer, DepthBuffer ]
     matrixMode $= (Modelview 0)
     loadIdentity
@@ -18,9 +18,9 @@ display u = do
         (vec2Vertex3 $ uhhCamPos uhh)
         (Vertex3 (0::GLdouble) 0 0)
         (Vector3 (0::GLdouble) 1 0)
-    render
+    render uhh
     flush
         
-render = do
-    renderObject Solid (Teapot 2)
+render uhh = do
+    callList $ uhhDisplayList uhh
 

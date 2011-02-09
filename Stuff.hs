@@ -22,8 +22,11 @@ keyboardMouse uhh (Char 's') Down _ _ = kmMoveAction vecBackward uhh
 
 keyboardMouse uhh (Char '<') Down _ _ = do
     modifyIORef uhh (\u -> u { uhhSteps = (max 2 $ (uhhSteps u)-1) } )
+    updateUhh uhh
+    
 keyboardMouse uhh (Char '>') Down _ _ = do
     modifyIORef uhh (\u -> u { uhhSteps = (uhhSteps u) + 1 } )
+    updateUhh uhh
 
 keyboardMouse uhh key Down modifiers position = do
     putStrLn $ show key

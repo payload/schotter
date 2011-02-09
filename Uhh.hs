@@ -1,5 +1,6 @@
 module Uhh where
 import Graphics.Rendering.OpenGL
+import Data.IORef
 
 import Voxelizer
 
@@ -23,10 +24,16 @@ vec2Vertex3 (Vec x y z) = Vertex3 x y z
 data Uhh = Uhh {
     uhhCamPos :: Vec,
     uhhLookAt :: Vec,
-    uhhSteps  :: Int
+    uhhSteps  :: Int,
+    uhhDisplayList :: DisplayList
 } deriving Show
 
 newUhh campos lookat steps = do
     dl <- defineNewList Compile $
         renderVoxels 3 steps
-    return (Uhh campos lookat steps)
+    return (Uhh campos lookat steps dl)
+    
+updateUhh uhhref = do
+    uhh <- readIORef uhhref
+    defineList (uhhDisplayList uhh) Compile $ do
+        renderVoxels 3 (uhhSteps uhh)
