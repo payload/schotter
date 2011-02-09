@@ -1,0 +1,24 @@
+module Uhh where
+import Graphics.Rendering.OpenGL
+
+data Vec = Vec {
+    vecX :: Double,
+    vecY :: Double,
+    vecZ :: Double
+} deriving Show
+
+makeVec x y z = Vec x y z
+
+vecLeft  (Vec x y z) = Vec (x-1) y z
+vecRight (Vec x y z) = Vec (x+1) y z
+vecUp    (Vec x y z) = Vec x (y-1) z
+vecDown  (Vec x y z) = Vec x (y+1) z
+
+vec2Vertex3 (Vec x y z) = Vertex3 x y z
+
+data Uhh = Uhh {
+    uhhCamPos :: Vec,
+    uhhLookAt :: Vec
+} deriving Show
+
+makeUhh campos lookat = Uhh campos lookat
