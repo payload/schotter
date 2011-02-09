@@ -1,6 +1,8 @@
 module Uhh where
 import Graphics.Rendering.OpenGL
 
+import Voxelizer
+
 data Vec = Vec {
     vecX :: Double,
     vecY :: Double,
@@ -25,4 +27,6 @@ data Uhh = Uhh {
 } deriving Show
 
 newUhh campos lookat steps = do
+    dl <- defineNewList Compile $
+        renderVoxels 3 steps
     return (Uhh campos lookat steps)
