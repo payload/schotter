@@ -7,22 +7,28 @@ import Data.IORef
 
 import Utils
 
-renderVoxels r steps = do
+renderVoxels r steps wireframe = do
     putStrLn $ show $ length voxels
-    mapM_ renderVoxel voxels
+    mapM_ (\vxl -> renderVoxel vxl wireframe) voxels
     where
         voxels = voxelize r steps
 
-renderVoxel (x, y, z, s) =
+renderVoxel (x, y, z, s) wireframe =
     preservingMatrix $ do
     translate $ Vector3 x y z
-    color $ Color3 clr clr clr
+    color $ Color3 cx cy cz
     renderObject Solid (Cube size)
-    color $ Color3 (0::GLfloat) 0 0
-    renderObject Wireframe (Cube size)
+    renderVoxelWireCube size wireframe
     where
         size = float2Double s
-        clr = (2 + y)/3
+        cx = abs x
+        cy = abs y
+        cz = abs z
+
+renderVoxelWireCube size True = do
+    color $ Color3 (0::GLfloat) 0 0
+    renderObject Wireframe (Cube size)
+renderVoxelWireCube _ False = return ()
 
 voxelize r steps =
     map (\(x,y,z) -> (x,y,z,step)) $

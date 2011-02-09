@@ -25,15 +25,18 @@ data Uhh = Uhh {
     uhhCamPos :: Vec,
     uhhLookAt :: Vec,
     uhhSteps  :: Int,
-    uhhDisplayList :: DisplayList
+    uhhDisplayList :: DisplayList,
+    uhhWireframe :: Bool
 } deriving Show
 
 newUhh campos lookat steps = do
     dl <- defineNewList Compile $
-        renderVoxels 3 steps
-    return (Uhh campos lookat steps dl)
+        renderVoxels 3 steps wireframe
+    return (Uhh campos lookat steps dl wireframe)
+    where
+        wireframe = True
     
 updateUhh uhhref = do
     uhh <- readIORef uhhref
     defineList (uhhDisplayList uhh) Compile $ do
-        renderVoxels 3 (uhhSteps uhh)
+        renderVoxels 3 (uhhSteps uhh) (uhhWireframe uhh)
