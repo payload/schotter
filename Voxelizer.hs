@@ -16,7 +16,7 @@ renderVoxels r steps wireframe = do
 renderVoxel (x, y, z, s) wireframe =
     preservingMatrix $ do
     translate $ Vector3 x y z
-    color $ Color3 cx cy cz
+    color $ Color4 cx cy cz 0.2
     renderObject Solid (Cube size)
     renderVoxelWireCube size wireframe
     where

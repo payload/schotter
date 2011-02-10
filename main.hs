@@ -10,6 +10,8 @@ main = do
     initialDisplayMode $= [ RGBAMode, WithDepthBuffer ]
     createWindow progname
     depthFunc $= Just Less
+    blendFunc $= (SrcAlpha, OneMinusSrcAlpha)
+    blend $= Enabled
     
     uhh <- newUhh 
         (makeVec (-10) 10 (-10))
