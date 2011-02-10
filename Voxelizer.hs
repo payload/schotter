@@ -38,8 +38,21 @@ voxelize r steps =
         steps2 = max 2 $ int2Float steps
         myFilter = voxelFilter $ inside r
 
-voxelFilter inside c@(x, y, z) =
-    inside c
+voxelFilter inside c
+    | inside c = voxelCheckNeighbors inside c
+    | otherwise = False
+
+voxelCheckNeighbors inside (x,y,z) =
+    not $ all inside $ map addxyz neighbors
+    where
+        addxyz = \(nx,ny,nz) -> (nx+x, ny+y, nz+z)
+        neighbors = [
+            (-1,0,0),
+            ( 1,0,0),
+            (0,-1,0),
+            (0, 1,0),
+            (0,0,-1),
+            (0,0, 1)]
 
 grid begin end step =
     flatten $
