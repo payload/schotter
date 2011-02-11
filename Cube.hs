@@ -1,7 +1,6 @@
 module Cube where
 import Graphics.Rendering.OpenGL
 import Graphics.UI.GLUT
-import Debug.Trace
 
 import Utils
 

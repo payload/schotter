@@ -5,8 +5,6 @@ import Graphics.UI.GLUT
 import GHC.Float
 import Data.IORef
 
-import Debug.Trace
-
 import Utils
 import Vec hiding (abs, map)
 import qualified Vec
@@ -31,18 +29,19 @@ renderVoxel (Voxel v size visible) wireframe =
     preservingMatrix $ do
     translate $ vec2Vector3 v
     color $ Color4 cx cy cz 1
-    renderPrimitive Quads $ mapM_ vertex $ cubeQuads size visible
+    renderPrimitive Quads vertices
     iff wireframe $ do
         color $ Color3 (0::GLfloat) 0 0
         renderObject Wireframe (Cube size)
     where
+        vertices = mapM_ vertex quads
+        quads = cubeQuads size visible
         vv = Vec.map (\e -> 0.6 + (0.4 * sin e)) v
         cx = vv!0
         cy = vv!1
         cz = vv!2
 
 voxelize r steps =
-    trace ("step: " ++ show step)
     [Voxel v step s | (v,s) <- zip grid visibleSides, length s > 0]
     where
         visibleSides = map (voxelVisibleSides step (inside r)) grid
@@ -63,8 +62,8 @@ voxelNeighborsInside step inside v =
     [s | (s,v) <- zip sides neighborsInside, not v]
     where
         neighborsInside = map inside $ map (add v) neighbors
+        neighbors = vecs ++ map neg vecs
+        vecs = map (mul step) [vecX, vecY, vecZ]
         sides = [
             Cube.Right, Cube.Top, Cube.Front,
             Cube.Left, Cube.Bottom, Cube.Back]
-        neighbors = vecs ++ map neg vecs
-        vecs = map (mul step) [vecX, vecY, vecZ]

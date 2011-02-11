@@ -19,7 +19,7 @@ newUhh campos lookat steps = do
         renderVoxels 3 steps wireframe
     return (Uhh campos lookat steps dl wireframe)
     where
-        wireframe = True
+        wireframe = False
     
 updateUhh uhhref = do
     uhh <- readIORef uhhref
