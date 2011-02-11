@@ -10,11 +10,13 @@ import Debug.Trace
 import Utils
 import Vec hiding (abs, map)
 import qualified Vec
+import Cube
 
 -- Voxel
 data Voxel = Voxel {
     voxPos :: Vec,
-    voxSize :: Double
+    voxSize :: Double,
+    voxVisibleSides :: [Side]
 } deriving Show
 -- Voxel
 
@@ -26,11 +28,12 @@ renderVoxels r steps wireframe = do
     where
         voxels = voxelize r steps
 
-renderVoxel (Voxel v size) wireframe =
+renderVoxel (Voxel v size visible) wireframe =
     preservingMatrix $ do
     translate $ vec2Vector3 v
     color $ Color4 cx cy cz 1
-    renderObject Solid (Cube size)
+    --renderObject Solid (Cube size)
+    renderQuads size visible
     iff wireframe $ do
         color $ Color3 (0::GLfloat) 0 0
         renderObject Wireframe (Cube size)
@@ -42,10 +45,9 @@ renderVoxel (Voxel v size) wireframe =
 
 voxelize r steps =
     trace ("step: " ++ show step)
-    map (\v -> Voxel v step) $
-    filter myFilter grid
+    [Voxel v step s | (v,s) <- zip grid visibleSides, length s > 0]
     where
-        myFilter = voxelFilter step $ inside r
+        visibleSides = map (voxelVisibleSides step (inside r)) grid
         step = (r*2) / int2Double steps
         grid = concat $ map
             (\x -> concat $ map
@@ -55,12 +57,16 @@ voxelize r steps =
 
 inside r v = (Vec.abs v) < r
 
-voxelFilter step inside v
-    | inside v = voxelCheckNeighbors step inside v
-    | otherwise = False
+voxelVisibleSides step inside v
+    | inside v = voxelNeighborsInside step inside v
+    | otherwise = []
 
-voxelCheckNeighbors step inside v =
-    not $ all inside $ map (add v) neighbors
+voxelNeighborsInside step inside v =
+    [s | (s,v) <- zip sides neighborsInside, not v]
     where
+        neighborsInside = map inside $ map (add v) neighbors
+        sides = [
+            Cube.Right, Cube.Top, Cube.Front,
+            Cube.Left, Cube.Bottom, Cube.Back]
         neighbors = vecs ++ map neg vecs
         vecs = map (mul step) [vecX, vecY, vecZ]
