@@ -17,7 +17,7 @@ main = do
     uhh <- newUhh 
         (vec (-10) 10 (-10))
         (vec 0 0 0)
-        (9)
+        (4)
     uhhref <- newIORef uhh
     
     displayCallback $= display uhhref

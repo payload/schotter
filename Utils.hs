@@ -1,5 +1,4 @@
 module Utils where
 
-flatten :: [[a]] -> [a]
-flatten l = foldl (++) [] l
-
+iff cond f | cond = f
+           | otherwise = return ()

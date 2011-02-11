@@ -26,9 +26,3 @@ updateUhh uhhref = do
     defineList (uhhDisplayList uhh) Compile $ do
         renderVoxels 3 (uhhSteps uhh) (uhhWireframe uhh)
 -- Uhh
-
--- Voxel
-data Voxel = Voxel {
-    voxPos :: Vec
-}
--- Voxel

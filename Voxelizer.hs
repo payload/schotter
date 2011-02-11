@@ -5,66 +5,62 @@ import Graphics.UI.GLUT
 import GHC.Float
 import Data.IORef
 
+import Debug.Trace
+
 import Utils
+import Vec hiding (abs, map)
+import qualified Vec
+
+-- Voxel
+data Voxel = Voxel {
+    voxPos :: Vec,
+    voxSize :: Double
+} deriving Show
+-- Voxel
 
 renderVoxels r steps wireframe = do
-    putStrLn $ show $ length voxels
+    putStrLn $ "steps: " ++ (show steps)
+    putStrLn $ "voxels: " ++ (show $ length voxels)
+    --putStrLn $ "voxels: " ++ (show $ map (vec2List . voxPos) voxels)
     mapM_ (\vxl -> renderVoxel vxl wireframe) voxels
     where
         voxels = voxelize r steps
 
-renderVoxel (x, y, z, s) wireframe =
+renderVoxel (Voxel v size) wireframe =
     preservingMatrix $ do
-    translate $ Vector3 x y z
+    translate $ vec2Vector3 v
     color $ Color4 cx cy cz 1
     renderObject Solid (Cube size)
-    renderVoxelWireCube size wireframe
+    iff wireframe $ do
+        color $ Color3 (0::GLfloat) 0 0
+        renderObject Wireframe (Cube size)
     where
-        size = float2Double s
-        cx = abs x
-        cy = abs y
-        cz = abs z
-
-renderVoxelWireCube size True = do
-    color $ Color3 (0::GLfloat) 0 0
-    renderObject Wireframe (Cube size)
-renderVoxelWireCube _ False = return ()
+        vv = Vec.map (\e -> 0.6 + (0.4 * sin e)) v
+        cx = vv!0
+        cy = vv!1
+        cz = vv!2
 
 voxelize r steps =
-    map (\(x,y,z) -> (x,y,z,step)) $
-    filter myFilter (grid (-r) r step)
+    trace ("step: " ++ show step)
+    map (\v -> Voxel v step) $
+    filter myFilter grid
     where
-        step = ((r*2) / (steps2-1))
-        steps2 = max 2 $ int2Float steps
-        myFilter = voxelFilter $ inside r
+        myFilter = voxelFilter step $ inside r
+        step = (r*2) / int2Double steps
+        grid = concat $ map
+            (\x -> concat $ map
+            (\y -> map
+            (\z -> vec x y z) allSteps) allSteps) allSteps
+        allSteps = take (steps+1) (iterate (\x -> x+step) (-r))
 
-voxelFilter inside c
-    | inside c = voxelCheckNeighbors inside c
+inside r v = (Vec.abs v) < r
+
+voxelFilter step inside v
+    | inside v = voxelCheckNeighbors step inside v
     | otherwise = False
 
-voxelCheckNeighbors inside (x,y,z) =
-    not $ all inside $ map addxyz neighbors
+voxelCheckNeighbors step inside v =
+    not $ all inside $ map (add v) neighbors
     where
-        addxyz = \(nx,ny,nz) -> (nx+x, ny+y, nz+z)
-        neighbors = [
-            (-1,0,0),
-            ( 1,0,0),
-            (0,-1,0),
-            (0, 1,0),
-            (0,0,-1),
-            (0,0, 1)]
-
-grid begin end step =
-    flatten $
-    map (\x -> flatten $ map
-        (\y -> map
-        (\z -> (x, y, z)) allSteps) allSteps) allSteps
-    where 
-        allSteps = goThrough begin end step
-
-goThrough begin end step =
-    take (floor steps) (iterate (\x -> x+step) begin)
-    where
-        steps = (end - begin) / step
-        
-inside r (x, y, z) = (sqrt $ x*x + y*y + z*z) <= r
+        neighbors = vecs ++ map neg vecs
+        vecs = map (mul step) [vecX, vecY, vecZ]
