@@ -23,7 +23,6 @@ data Voxel = Voxel {
 renderVoxels r steps wireframe = do
     putStrLn $ "steps: " ++ (show steps)
     putStrLn $ "voxels: " ++ (show $ length voxels)
-    --putStrLn $ "voxels: " ++ (show $ map (vec2List . voxPos) voxels)
     mapM_ (\vxl -> renderVoxel vxl wireframe) voxels
     where
         voxels = voxelize r steps
@@ -32,8 +31,7 @@ renderVoxel (Voxel v size visible) wireframe =
     preservingMatrix $ do
     translate $ vec2Vector3 v
     color $ Color4 cx cy cz 1
-    --renderObject Solid (Cube size)
-    renderQuads size visible
+    renderPrimitive Quads $ mapM_ vertex $ cubeQuads size visible
     iff wireframe $ do
         color $ Color3 (0::GLfloat) 0 0
         renderObject Wireframe (Cube size)

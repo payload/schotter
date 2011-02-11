@@ -9,18 +9,12 @@ data Side = Front | Back | Left | Right | Top | Bottom deriving Show
 allSides = [
     Cube.Front, Cube.Back, Cube.Left,
     Cube.Right, Cube.Top, Cube.Bottom]
-
-vertex3 (x, y, z) = vertex $ Vertex3 x y z
-
-renderQuads size [] = renderQuads size allSides
-renderQuads size visible = do
-    renderPrimitive Quads $ quads w visible
+  
+cubeQuads size visible = do
+    map vertex3 (concat $ map (flip cubeSide w) visible)
     where
         w = size * 0.5
-  
-quads :: Double -> [Side] -> IO ()
-quads w visible = do
-    mapM_ vertex3 (concat $ map (flip cubeSide w) visible)
+        vertex3 (x, y, z) = Vertex3 x y z
 
 cubeSide = cs
 cs Cube.Front w = [
