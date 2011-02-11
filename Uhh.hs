@@ -3,24 +3,9 @@ import Graphics.Rendering.OpenGL
 import Data.IORef
 
 import Voxelizer
+import Vec
 
-data Vec = Vec {
-    vecX :: Double,
-    vecY :: Double,
-    vecZ :: Double
-} deriving Show
-
-makeVec x y z = Vec x y z
-
-vecLeft  (Vec x y z) = Vec (x-1) y z
-vecRight (Vec x y z) = Vec (x+1) y z
-vecUp    (Vec x y z) = Vec x (y-1) z
-vecDown  (Vec x y z) = Vec x (y+1) z
-vecForward (Vec x y z) = Vec x y (z+1)
-vecBackward (Vec x y z) = Vec x y (z-1)
-
-vec2Vertex3 (Vec x y z) = Vertex3 x y z
-
+-- Uhh
 data Uhh = Uhh {
     uhhCamPos :: Vec,
     uhhLookAt :: Vec,
@@ -40,3 +25,10 @@ updateUhh uhhref = do
     uhh <- readIORef uhhref
     defineList (uhhDisplayList uhh) Compile $ do
         renderVoxels 3 (uhhSteps uhh) (uhhWireframe uhh)
+-- Uhh
+
+-- Voxel
+data Voxel = Voxel {
+    voxPos :: Vec
+}
+-- Voxel

@@ -8,6 +8,7 @@ import Data.IORef
 import Cube
 import Utils
 import Uhh
+import Vec
 
 display uhhref = do
     uhh <- readIORef uhhref

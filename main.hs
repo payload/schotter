@@ -4,6 +4,7 @@ import Data.IORef
 
 import Uhh
 import Stuff
+import Vec
 
 main = do
     (progname, _) <- getArgsAndInitialize
@@ -14,8 +15,8 @@ main = do
     blend $= Enabled
     
     uhh <- newUhh 
-        (makeVec (-10) 10 (-10))
-        (makeVec 0 0 0)
+        (vec (-10) 10 (-10))
+        (vec 0 0 0)
         (9)
     uhhref <- newIORef uhh
     

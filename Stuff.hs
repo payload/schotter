@@ -5,6 +5,7 @@ import Data.IORef
 
 import Display
 import Uhh
+import Vec
 
 kmMoveAction f uhh = 
     modifyIORef uhh (\u -> u { uhhCamPos = f $ uhhCamPos u } )
