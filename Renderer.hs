@@ -13,7 +13,7 @@ import Cube
 renderVoxels r steps wireframe = do
     putStrLn $ "steps: " ++ (show steps)
     putStrLn $ "voxels: " ++ (show $ length voxels)
-    --mapM_ (flip renderVoxel wireframe) voxels
+    mapM_ (flip renderVoxel wireframe) voxels
     where
         voxels = voxelize r steps
 

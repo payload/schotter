@@ -24,10 +24,10 @@ main = do
     uhhref <- newIORef uhh
     
     displayCallback $= display uhhref
-    --idleCallback $= Just (display uhhref)
+    idleCallback $= Just (display uhhref)
     reshapeCallback $= Just reshape
     keyboardMouseCallback $= Just (keyboardMouse uhhref)
     motionCallback $= Just motion
-    --mainLoop
+    mainLoop
     putStrLn $ show uhh
 
