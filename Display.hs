@@ -1,12 +1,7 @@
 module Display (display) where
 import Graphics.Rendering.OpenGL
-import Graphics.Rendering.OpenGL.GLU
-import Graphics.UI.GLUT
-import GHC.Float
 import Data.IORef
 
-import Cube
-import Utils
 import Uhh
 import Vec
 

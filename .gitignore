@@ -1,3 +1,6 @@
 main
 *.hi
 *.o
+*.prof
+test.hs
+test

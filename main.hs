@@ -2,9 +2,12 @@ import Graphics.Rendering.OpenGL
 import Graphics.UI.GLUT
 import Data.IORef
 
+import Data.Vec.Packed
+import qualified Data.Vec as Vec
+import Vec
+
 import Uhh
 import Stuff
-import Vec
 
 main = do
     (progname, _) <- getArgsAndInitialize
@@ -15,15 +18,16 @@ main = do
     blend $= Enabled
     
     uhh <- newUhh 
-        (vec (-10) 10 (-10))
-        (vec 0 0 0)
-        (4)
+        (Vec3D (-10) 10 (-10))
+        (Vec3D 0 0 0)
+        (40)
     uhhref <- newIORef uhh
     
     displayCallback $= display uhhref
-    idleCallback $= Just (display uhhref)
+    --idleCallback $= Just (display uhhref)
     reshapeCallback $= Just reshape
     keyboardMouseCallback $= Just (keyboardMouse uhhref)
     motionCallback $= Just motion
-    mainLoop
+    --mainLoop
+    putStrLn $ show uhh
 

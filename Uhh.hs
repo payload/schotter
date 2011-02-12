@@ -2,13 +2,17 @@ module Uhh where
 import Graphics.Rendering.OpenGL
 import Data.IORef
 
-import Voxelizer
+import Data.Vec.Packed
+import qualified Data.Vec as Vec
 import Vec
+
+import Voxelizer
+import Renderer
 
 -- Uhh
 data Uhh = Uhh {
-    uhhCamPos :: Vec,
-    uhhLookAt :: Vec,
+    uhhCamPos :: Vec3D,
+    uhhLookAt :: Vec3D,
     uhhSteps  :: Int,
     uhhDisplayList :: DisplayList,
     uhhWireframe :: Bool

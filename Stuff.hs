@@ -7,19 +7,19 @@ import Display
 import Uhh
 import Vec
 
-kmMoveAction f uhh = 
+kmMoveAction f uhh = do
     modifyIORef uhh (\u -> u { uhhCamPos = f $ uhhCamPos u } )
     
 -- keyboardMouse
 keyboardMouse u (Char ' ') Down _ _ = do
     uhh <- readIORef u
     putStrLn $ show uhh
-keyboardMouse uhh (Char 'a') Down _ _ = kmMoveAction vecLeft uhh
-keyboardMouse uhh (Char 'd') Down _ _ = kmMoveAction vecRight uhh
-keyboardMouse uhh (Char 'q') Down _ _ = kmMoveAction vecUp uhh
-keyboardMouse uhh (Char 'e') Down _ _ = kmMoveAction vecDown uhh
-keyboardMouse uhh (Char 'w') Down _ _ = kmMoveAction vecForward uhh
-keyboardMouse uhh (Char 's') Down _ _ = kmMoveAction vecBackward uhh
+keyboardMouse uhh (Char 'a') Down _ _ = kmMoveAction ((-) vecX) uhh
+keyboardMouse uhh (Char 'd') Down _ _ = kmMoveAction (+ vecX) uhh
+keyboardMouse uhh (Char 'q') Down _ _ = kmMoveAction (+ vecY) uhh
+keyboardMouse uhh (Char 'e') Down _ _ = kmMoveAction ((-) vecY) uhh
+keyboardMouse uhh (Char 'w') Down _ _ = kmMoveAction (+ vecZ) uhh
+keyboardMouse uhh (Char 's') Down _ _ = kmMoveAction ((-) vecZ) uhh
 
 keyboardMouse uhh (Char '<') Down _ _ = do
     modifyIORef uhh (\u -> u { uhhSteps = (max 2 $ (uhhSteps u)-1) } )
