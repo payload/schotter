@@ -14,11 +14,11 @@ kmMoveAction f uhh = do
 keyboardMouse u (Char ' ') Down _ _ = do
     uhh <- readIORef u
     putStrLn $ show uhh
-keyboardMouse uhh (Char 'a') Down _ _ = kmMoveAction (flip (-) vecX) uhh
-keyboardMouse uhh (Char 'd') Down _ _ = kmMoveAction ((+) vecX) uhh
-keyboardMouse uhh (Char 'q') Down _ _ = kmMoveAction ((+) vecY) uhh
+keyboardMouse uhh (Char 'a') Down _ _ = kmMoveAction (flip(-) vecX) uhh
+keyboardMouse uhh (Char 'd') Down _ _ = kmMoveAction (+ vecX) uhh
+keyboardMouse uhh (Char 'q') Down _ _ = kmMoveAction (+ vecY) uhh
 keyboardMouse uhh (Char 'e') Down _ _ = kmMoveAction (flip (-) vecY) uhh
-keyboardMouse uhh (Char 'w') Down _ _ = kmMoveAction ((+) vecZ) uhh
+keyboardMouse uhh (Char 'w') Down _ _ = kmMoveAction (+ vecZ) uhh
 keyboardMouse uhh (Char 's') Down _ _ = kmMoveAction (flip (-) vecZ) uhh
 
 keyboardMouse uhh (Char '<') Down _ _ = do
