@@ -17,9 +17,10 @@ renderVoxels funny step wireframe = do
     where
         voxels = voxelize funny step
 
-renderVoxel (Voxel v@(Vec3D x y z) size visible) wireframe =
+renderVoxel (Voxel v@(Vec3D x y z) size visible clr norm) wireframe =
     preservingMatrix $ do
     translate $ vec2Vector3 v
+    normal $ vec2Normal3 norm
     color $ vec2Color4 clr 1
     renderPrimitive Quads vertices
     iff wireframe $ do
@@ -31,5 +32,4 @@ renderVoxel (Voxel v@(Vec3D x y z) size visible) wireframe =
         r = sin (Vec.norm v * 0.4)
         c = 0.05 + 0.9 * (Vec.sum d / 3)
         d = (Vec.map (\e -> 0.5 + 0.5 * sin e) (v * v))
-        clr = Vec3D c c c
 

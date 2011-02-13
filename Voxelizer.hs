@@ -12,12 +12,14 @@ import Funny
 data Voxel = Voxel {
     voxPos :: Vec3D,
     voxSize :: Double,
-    voxVisibleSides :: [Side]
+    voxVisibleSides :: [Side],
+    voxColor :: Vec3D,
+    voxNormal :: Vec3D
 } deriving Show
 -- Voxel
 
-voxelize funny@(Funny inside bounds r) step =
-    [Voxel v step s | (v,s) <- zip grid visibleSides, length s > 0]
+voxelize funny@(Funny inside bounds normal color r) step =
+    [Voxel v step s (color v) (normal v) | (v,s) <- zip grid visibleSides, length s > 0]
     where
         visibleSides = map (voxelVisibleSides step funny) grid
         steps = double2Int $ (r*2) / step
@@ -33,11 +35,11 @@ voxelGrid allSteps =
 voxelStepThrough steps step r = 
     take (steps+1) (iterate (\x -> x+step) (-r))
 
-voxelVisibleSides step funny@(Funny inside _ _) v
+voxelVisibleSides step funny@(Funny inside _ _ _ _) v
     | inside v = voxelNeighborsInside step funny v
     | otherwise = []
 
-voxelNeighborsInside step (Funny inside bounds _) v =
+voxelNeighborsInside step (Funny inside bounds _ _ _) v =
     [s | (s,v) <- zip sides neighborsInside, not v]
     where
         neighborsInside = map (\e -> inside e && bounds e) neighbors
