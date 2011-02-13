@@ -10,9 +10,12 @@ import Vec
 kmMoveAction f uhhref = do
     modifyIORef uhhref (\uhh -> uhh { uhhCamPos = f $ uhhCamPos uhh } )
     
-keyboardMouse uhhref (Char 'r') Down _ _ = do
-  modifyUhh uhhref (\uhh -> uhh {
-    uhhFunnyIndex = (uhhFunnyIndex uhh + 1) `mod` length uhhFunnies })
+kmFunnies i uhhref = do
+    modifyUhh uhhref (\uhh -> uhh {
+        uhhFunnyIndex = (uhhFunnyIndex uhh + i) `mod` length uhhFunnies })
+    
+keyboardMouse uhhref (Char 'r') Down _ _ = kmFunnies 1 uhhref
+keyboardMouse uhhref (Char 'f') Down _ _ = kmFunnies (-1) uhhref
 
 -- keyboardMouse
 keyboardMouse uhhref (Char 'a') Down _ _ = kmMoveAction (flip(-) vecX) uhhref
