@@ -20,7 +20,7 @@ renderVoxels r steps wireframe = do
 renderVoxel (Voxel v@(Vec3D x y z) size visible) wireframe =
     preservingMatrix $ do
     translate $ vec2Vector3 v
-    color $ Color4 cx cy cz 1
+    color $ vec2Color4 clr 1
     renderPrimitive Quads vertices
     iff wireframe $ do
         color $ Color3 (0::GLfloat) 0 0
@@ -29,6 +29,7 @@ renderVoxel (Voxel v@(Vec3D x y z) size visible) wireframe =
         vertices = mapM_ vertex quads
         quads = cubeQuads size visible
         r = sin (Vec.norm v * 0.4)
-        cx = r
-        cy = r
-        cz = r
+        c = 0.05 + 0.9 * (Vec.sum d / 3)
+        d = (Vec.map (\e -> 0.5 + 0.5 * sin e) (v * v))
+        clr = Vec3D c c c
+
