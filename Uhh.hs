@@ -22,7 +22,7 @@ data Uhh = Uhh {
 
 uhhFunny uhh = uhhFunnies !! uhhFunnyIndex uhh
 
-uhhFunnies = [funnyFun 3, funnySphere 3]
+uhhFunnies = funnies
 
 modifyUhh uhhref f = do
     modifyIORef uhhref f

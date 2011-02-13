@@ -7,6 +7,8 @@ data Funny = Funny {
     funnyR :: Double
 }
 
+funnies = [funnyFun 3, funnySphere 3, funnyFun 4, funnySphere 4]
+
 funnySphere r =
     Funny inside r
     where
