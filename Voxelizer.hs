@@ -6,6 +6,7 @@ import qualified Data.Vec as Vec
 import Vec
 
 import Cube
+import Funny
 
 -- Voxel
 data Voxel = Voxel {
@@ -15,10 +16,10 @@ data Voxel = Voxel {
 } deriving Show
 -- Voxel
 
-voxelize r steps =
+voxelize (Funny inside r) steps =
     [Voxel v step s | (v,s) <- zip grid visibleSides, length s > 0]
     where
-        visibleSides = map (voxelVisibleSides step (inside r)) grid
+        visibleSides = map (voxelVisibleSides step inside) grid
         step = (r*2) / int2Double steps
         grid = voxelGrid allSteps
         allSteps = voxelStepThrough steps step r
@@ -31,9 +32,6 @@ voxelGrid allSteps =
 
 voxelStepThrough steps step r = 
     take (steps+1) (iterate (\x -> x+step) (-r))
-
-inside r v@(Vec3D x y z) =
-    ((Vec.dot v v) < (r*r)) && (not $ (x < 0) && (y > 0) && (z < 0))
 
 voxelVisibleSides step inside v
     | inside v = voxelNeighborsInside step inside v

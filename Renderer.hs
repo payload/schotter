@@ -10,12 +10,12 @@ import Utils
 import Voxelizer
 import Cube
 
-renderVoxels r steps wireframe = do
+renderVoxels funny steps wireframe = do
     putStrLn $ "steps: " ++ (show steps)
     putStrLn $ "voxels: " ++ (show $ length voxels)
     mapM_ (flip renderVoxel wireframe) voxels
     where
-        voxels = voxelize r steps
+        voxels = voxelize funny steps
 
 renderVoxel (Voxel v@(Vec3D x y z) size visible) wireframe =
     preservingMatrix $ do

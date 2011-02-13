@@ -7,32 +7,32 @@ import Display
 import Uhh
 import Vec
 
-kmMoveAction f uhh = do
-    modifyIORef uhh (\u -> u { uhhCamPos = f $ uhhCamPos u } )
+kmMoveAction f uhhref = do
+    modifyIORef uhhref (\uhh -> uhh { uhhCamPos = f $ uhhCamPos uhh } )
     
+keyboardMouse uhhref (Char 'r') Down _ _ = do
+  modifyUhh uhhref (\uhh -> uhh {
+    uhhFunnyIndex = (uhhFunnyIndex uhh + 1) `mod` length uhhFunnies })
+
 -- keyboardMouse
-keyboardMouse u (Char ' ') Down _ _ = do
-    uhh <- readIORef u
-    putStrLn $ show uhh
-keyboardMouse uhh (Char 'a') Down _ _ = kmMoveAction (flip(-) vecX) uhh
-keyboardMouse uhh (Char 'd') Down _ _ = kmMoveAction (+ vecX) uhh
-keyboardMouse uhh (Char 'q') Down _ _ = kmMoveAction (+ vecY) uhh
-keyboardMouse uhh (Char 'e') Down _ _ = kmMoveAction (flip (-) vecY) uhh
-keyboardMouse uhh (Char 'w') Down _ _ = kmMoveAction (+ vecZ) uhh
-keyboardMouse uhh (Char 's') Down _ _ = kmMoveAction (flip (-) vecZ) uhh
+keyboardMouse uhhref (Char 'a') Down _ _ = kmMoveAction (flip(-) vecX) uhhref
+keyboardMouse uhhref (Char 'd') Down _ _ = kmMoveAction (+ vecX) uhhref
+keyboardMouse uhhref (Char 'q') Down _ _ = kmMoveAction (+ vecY) uhhref
+keyboardMouse uhhref (Char 'e') Down _ _ = kmMoveAction (flip (-) vecY) uhhref
+keyboardMouse uhhref (Char 'w') Down _ _ = kmMoveAction (+ vecZ) uhhref
+keyboardMouse uhhref (Char 's') Down _ _ = kmMoveAction (flip (-) vecZ) uhhref
 
-keyboardMouse uhh (Char '<') Down _ _ = do
-    modifyIORef uhh (\u -> u { uhhSteps = (max 2 $ (uhhSteps u)-1) } )
-    updateUhh uhh
-keyboardMouse uhh (Char '>') Down _ _ = do
-    modifyIORef uhh (\u -> u { uhhSteps = (uhhSteps u) + 1 } )
-    updateUhh uhh
+keyboardMouse uhhref (Char '<') Down _ _ =
+    modifyUhh uhhref
+    (\uhh -> uhh { uhhSteps = (max 2 $ (uhhSteps uhh)-1) })
+keyboardMouse uhhref (Char '>') Down _ _ =
+    modifyUhh uhhref
+    (\uhh -> uhh { uhhSteps = (uhhSteps uhh) + 1 })
 
-keyboardMouse uhh (Char '2') Down _ _ = do
-    modifyIORef uhh (\u -> u { uhhWireframe = not $ uhhWireframe u } )
-    updateUhh uhh
+keyboardMouse uhhref (Char '2') Down _ _ = do
+    modifyUhh uhhref (\uhh -> uhh { uhhWireframe = not $ uhhWireframe uhh } )
 
-keyboardMouse uhh key Down modifiers position = do
+keyboardMouse uhhref key Down modifiers position = do
     putStrLn $ show key
     
 keyboardMouse uhh key state modifiers position = return ()

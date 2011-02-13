@@ -20,7 +20,7 @@ main = do
     uhh <- newUhh 
         (Vec3D (-10) 10 (-10))
         (Vec3D 0 0 0)
-        (40)
+        (20)
     uhhref <- newIORef uhh
     
     displayCallback $= display uhhref
@@ -29,5 +29,4 @@ main = do
     keyboardMouseCallback $= Just (keyboardMouse uhhref)
     motionCallback $= Just motion
     mainLoop
-    putStrLn $ show uhh
 

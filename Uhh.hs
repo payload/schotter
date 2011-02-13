@@ -8,6 +8,7 @@ import Vec
 
 import Voxelizer
 import Renderer
+import Funny
 
 -- Uhh
 data Uhh = Uhh {
@@ -15,18 +16,28 @@ data Uhh = Uhh {
     uhhLookAt :: Vec3D,
     uhhSteps  :: Int,
     uhhDisplayList :: DisplayList,
-    uhhWireframe :: Bool
-} deriving Show
+    uhhWireframe :: Bool,
+    uhhFunnyIndex :: Int
+}
+
+uhhFunny uhh = uhhFunnies !! uhhFunnyIndex uhh
+
+uhhFunnies = [funnyFun 3, funnySphere 3]
+
+modifyUhh uhhref f = do
+    modifyIORef uhhref f
+    updateUhh uhhref
 
 newUhh campos lookat steps = do
     dl <- defineNewList Compile $
-        renderVoxels 3 steps wireframe
-    return (Uhh campos lookat steps dl wireframe)
+        renderVoxels (uhhFunnies !! funny) steps wireframe
+    return (Uhh campos lookat steps dl wireframe funny)
     where
         wireframe = False
+        funny = 0
     
 updateUhh uhhref = do
     uhh <- readIORef uhhref
     defineList (uhhDisplayList uhh) Compile $ do
-        renderVoxels 3 (uhhSteps uhh) (uhhWireframe uhh)
+        renderVoxels (uhhFunny uhh) (uhhSteps uhh) (uhhWireframe uhh)
 -- Uhh
