@@ -14,7 +14,7 @@ import Funny
 data Uhh = Uhh {
     uhhCamPos :: Vec3D,
     uhhLookAt :: Vec3D,
-    uhhSteps  :: Int,
+    uhhStep  :: Double,
     uhhDisplayList :: DisplayList,
     uhhWireframe :: Bool,
     uhhFunnyIndex :: Int
@@ -28,10 +28,10 @@ modifyUhh uhhref f = do
     modifyIORef uhhref f
     updateUhh uhhref
 
-newUhh campos lookat steps = do
+newUhh campos lookat step = do
     dl <- defineNewList Compile $
-        renderVoxels (uhhFunnies !! funny) steps wireframe
-    return (Uhh campos lookat steps dl wireframe funny)
+        renderVoxels (uhhFunnies !! funny) step wireframe
+    return (Uhh campos lookat step dl wireframe funny)
     where
         wireframe = False
         funny = 0
@@ -39,5 +39,5 @@ newUhh campos lookat steps = do
 updateUhh uhhref = do
     uhh <- readIORef uhhref
     defineList (uhhDisplayList uhh) Compile $ do
-        renderVoxels (uhhFunny uhh) (uhhSteps uhh) (uhhWireframe uhh)
+        renderVoxels (uhhFunny uhh) (uhhStep uhh) (uhhWireframe uhh)
 -- Uhh

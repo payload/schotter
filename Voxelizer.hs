@@ -16,11 +16,12 @@ data Voxel = Voxel {
 } deriving Show
 -- Voxel
 
-voxelize (Funny inside r) steps =
+voxelize (Funny inside r) step =
     [Voxel v step s | (v,s) <- zip grid visibleSides, length s > 0]
     where
         visibleSides = map (voxelVisibleSides step inside) grid
-        step = (r*2) / int2Double steps
+        --step = (r*2) / int2Double steps
+        steps = double2Int $ (r*2) / step
         grid = voxelGrid allSteps
         allSteps = voxelStepThrough steps step r
 

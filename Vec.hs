@@ -3,6 +3,7 @@ import Graphics.Rendering.OpenGL
 import Data.Vec.Packed
 --import qualified Data.Vec as Vec
 
+vec0 = Vec3D 0 0 0
 vecX = Vec3D 1 0 0
 vecY = Vec3D 0 1 0
 vecZ = Vec3D 0 0 1

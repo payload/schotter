@@ -8,12 +8,18 @@ import Uhh
 import Vec
 
 kmMoveAction f uhhref = do
-    modifyIORef uhhref (\uhh -> uhh { uhhCamPos = f $ uhhCamPos uhh } )
+    modifyIORef uhhref
+        (\uhh -> uhh { uhhCamPos = f $ uhhCamPos uhh } )
     
 kmFunnies i uhhref = do
     modifyUhh uhhref (\uhh -> uhh {
         uhhFunnyIndex = (uhhFunnyIndex uhh + i) `mod` length uhhFunnies })
-    
+        
+kmStep :: Double -> IORef Uhh -> IO ()
+kmStep f uhhref = do
+    modifyUhh uhhref
+        (\uhh -> uhh { uhhStep = f * uhhStep uhh })
+        
 keyboardMouse uhhref (Char 'r') Down _ _ = kmFunnies 1 uhhref
 keyboardMouse uhhref (Char 'f') Down _ _ = kmFunnies (-1) uhhref
 
@@ -25,12 +31,8 @@ keyboardMouse uhhref (Char 'e') Down _ _ = kmMoveAction (flip (-) vecY) uhhref
 keyboardMouse uhhref (Char 'w') Down _ _ = kmMoveAction (+ vecZ) uhhref
 keyboardMouse uhhref (Char 's') Down _ _ = kmMoveAction (flip (-) vecZ) uhhref
 
-keyboardMouse uhhref (Char '<') Down _ _ =
-    modifyUhh uhhref
-    (\uhh -> uhh { uhhSteps = (max 2 $ (uhhSteps uhh)-1) })
-keyboardMouse uhhref (Char '>') Down _ _ =
-    modifyUhh uhhref
-    (\uhh -> uhh { uhhSteps = (uhhSteps uhh) + 1 })
+keyboardMouse uhhref (Char '<') Down _ _ = kmStep (9/10) uhhref
+keyboardMouse uhhref (Char '>') Down _ _ = kmStep (10/9) uhhref
 
 keyboardMouse uhhref (Char '2') Down _ _ = do
     modifyUhh uhhref (\uhh -> uhh { uhhWireframe = not $ uhhWireframe uhh } )

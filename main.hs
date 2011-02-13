@@ -20,7 +20,7 @@ main = do
     uhh <- newUhh 
         (Vec3D (-10) 10 (-10))
         (Vec3D 0 0 0)
-        (20)
+        (1)
     uhhref <- newIORef uhh
     
     displayCallback $= display uhhref
