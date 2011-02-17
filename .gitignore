@@ -4,3 +4,4 @@ main
 *.prof
 test.hs
 test
+run-blocks

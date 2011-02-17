@@ -1,0 +1,3 @@
+#!/bin/sh
+cd blocks
+ghc --make -O3 -o ../run-blocks $@ main.hs
