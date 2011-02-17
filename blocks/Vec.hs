@@ -22,3 +22,5 @@ vec3D2Vertex3D (Vec3D x y z) = Vertex3 x y z
 
 vec2Vector3D v = vec3D2Vector3D $ Vec.map (fromRational . toRational) v
 vec3D2Vector3D (Vec3D x y z) = Vector3 x y z
+
+xyz2vec (x,y,z) = Vec3F x y z

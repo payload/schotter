@@ -22,6 +22,7 @@ main =
     in do
     (progname, _) <- getArgsAndInitialize
     initialDisplayMode $= [ RGBAMode, WithDepthBuffer ]
+    initialWindowSize $= Size 800 500
     createWindow progname
     depthFunc $= Just Less
     blendFunc $= (SrcAlpha, OneMinusSrcAlpha)
@@ -40,12 +41,13 @@ main =
     updateUhh uhhref
     
     displayCallback $= display uhhref
-    idleCallback $= Just (idle uhhref)
+    addTimerCallback 50 $ timestep uhhref
     reshapeCallback $= Just reshape
     keyboardMouseCallback $= Just (keyboardMouse uhhref)
     motionCallback $= Just motion
     mainLoop
 
-idle uhhref = do
-    modifyUhh uhhref (\uhh -> uhh { uhhSimStuff = simulate (uhhSimStuff uhh) } )
+timestep uhhref = do
+    modifyUhh uhhref (uhhSimulate (50/1000))
     display uhhref
+    addTimerCallback 50 $ timestep uhhref

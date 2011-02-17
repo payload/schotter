@@ -8,9 +8,11 @@ import Data.Vec.Packed
 import Vec
 
 display uhhref = do
+    matrixMode $= (Modelview 0)
+    preservingMatrix $ do
     uhh <- readIORef uhhref
     clear [ ColorBuffer, DepthBuffer ]
-    matrixMode $= (Modelview 0)
+    
     loadIdentity
     lookAt 
         (vec2Vertex3D $ uhhCamPos uhh)

@@ -9,26 +9,26 @@ import Debug.Trace
 data SimObj =
     SimObj {
         simPos :: Vec3F,
-        simAni :: (SimObj -> SimObj)
+        simAni :: (Float -> SimObj -> SimObj)
     } |
     SimObjTime {
         simPos :: Vec3F,
-        simAni :: (SimObj -> SimObj),
+        simAni :: (Float -> SimObj -> SimObj),
         simTime :: Float
     }
 
-newSimObj pos ani = SimObj pos ani
+newSimObj pos = SimObj pos (\dt s -> s)
+newSimLinearMove pos vel = SimObj pos $ aniLinearMove vel
 newSimSinus pos max time offset = SimObjTime pos (aniSinus pos max time) offset
 
-simulate [] = []
-simulate (s:t) = (simAni s) s : simulate t
+simulate dt s = (simAni s) dt s
 
-aniLinearMove v s = s { simPos = simPos s + v }
+aniLinearMove v dt s = s { simPos = simPos s + Vec.map (dt*) v }
 
-aniSinus pos max time s =
+aniSinus pos max time dt s =
     s {
         simPos = pos + Vec.map ((sin simtime) *) max,
-        simTime = simtime + 1/(time * 3.14159 * 10)
+        simTime = simtime + 1/(time * 3.14159)
     }
     where
         simtime = simTime s

@@ -7,7 +7,7 @@ import qualified Data.Vec as Vec
 import Vec
 
 renderBlock v = preservingMatrix $ do
-    translate $ vec2Vector3 (Vec.map (fromIntegral . round) v)
+    translate $ vec2Vector3 $ Vec.map (fromIntegral . floor) v
     color $ Color3 (1::GLfloat) 1 1
     renderObject Solid $ Cube 1
     color $ Color3 (0::GLfloat) 0 0
