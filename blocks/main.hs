@@ -1,13 +1,9 @@
 import Graphics.Rendering.OpenGL
 import Graphics.UI.GLUT
 import Data.IORef
-
 import Data.Vec.Packed
-import qualified Data.Vec as Vec
-import Vec
 
 import Uhh
-import Simulator
 import Stuff
 
 lightAmbient = Color4 a a a 1
@@ -35,7 +31,7 @@ main =
     --shadeModel $= Flat
     
     uhh <- newUhh 
-        (Vec3F (-10) 10 (-10))
+        (Vec3F (-15) 15 (-15))
         (Vec3F 0 0 0)
     uhhref <- newIORef uhh
     updateUhh uhhref

@@ -6,17 +6,23 @@ import Data.Vec.Packed
 import qualified Data.Vec as Vec
 import Vec
 
-renderBlock v = preservingMatrix $ do
-    translate $ vec2Vector3 $ Vec.map (fromIntegral . floor) v
-    color $ Color3 (1::GLfloat) 1 1
+import Clean
+
+renderBlock (Blocky pos) = renderBlock $ BlockyColored pos (Vec4F 1 1 1 1)
+renderBlock (BlockyColored v (Vec4F r g b a)) = preservingMatrix $ do
+    translate $ vec2Vector3 $ Vec.map fromIntegral v
+    color $ Color4 r g b a
     renderObject Solid $ Cube 1
     color $ Color3 (0::GLfloat) 0 0
     renderObject Wireframe $ Cube 1.01
 
-renderBlocks [] = return ()
-renderBlocks (v:vs) = do
-    renderBlock v 
-    renderBlocks vs
+renderBlocks blocks = mapM_ renderBlock (blocksColorize blocks colors)
+    where
+        colors = cycle [
+            Vec4F 0 0.5 0 1
+            ]
+
+renderBlocksOfBlocks bofb = mapM_ renderBlocks bofb
 
 {-
 renderVoxels funny step wireframe = do

@@ -1,13 +1,11 @@
 module Uhh where
 import Graphics.Rendering.OpenGL
 import Data.IORef
-
 import Data.Vec.Packed
-import qualified Data.Vec as Vec
-import Vec
 
 import Renderer
-import Funny
+import Clean
+import UnsaneDefaults
 
 -- Uhh
 data Uhh = Uhh {
@@ -15,34 +13,14 @@ data Uhh = Uhh {
     uhhLookAt :: Vec3F,
     uhhDisplayList :: DisplayList,
     uhhWireframe :: Bool,
-    uhhFunnies :: [Funny]
+    uhhÜhh :: Ühh
 }
 
 uhhSimulate dt uhh =
-    uhh { uhhFunnies = map (funSimulate dt) (uhhFunnies uhh) }
+    uhh { uhhÜhh = ühhSimulate dt $ uhhÜhh uhh }
 
-uhhDefaultRender uhh =
-    renderBlocks $ map funPos (uhhFunnies uhh)
-
-uhhDefaultFunnies = 
-    map (newFunLinearMove vec0) vels
-    where
-        as = iterate (pi*0.2 +) 0
-        bs = take 10 as
-        xs = map cos bs
-        ys = map (\x->0) bs
-        zs = map sin bs
-        vels = map xyz2vec (zip3 xs ys zs)
-
-{-
-waves =
-    concat
-    [[newSimSinus (Vec3F (-10 + x) 0 (-10 + y)) (Vec3F 0 1 0) 1 (x+y)
-        | x <- take (floor n) $ iterate (1 +) 0]
-        | y <- take (floor n) $ iterate (1 +) 0]
-    where
-        n = 20
--}
+uhhRender uhh =
+    renderBlocksOfBlocks $ ühhBlocks $ uhhÜhh uhh
 
 modifyUhh uhhref f = do
     modifyIORef uhhref f
@@ -50,11 +28,12 @@ modifyUhh uhhref f = do
 
 newUhh campos lookat = do
     dl <- defineNewList Compile $ do return ()
-    return (Uhh campos lookat dl wireframe uhhDefaultFunnies)
+    return (Uhh campos lookat dl wireframe ühh)
     where
         wireframe = False
+        ühh = ühhDefault
     
 updateUhh uhhref = do
     uhh <- readIORef uhhref
-    defineList (uhhDisplayList uhh) Compile $ do uhhDefaultRender uhh
+    defineList (uhhDisplayList uhh) Compile $ do uhhRender uhh
 -- Uhh

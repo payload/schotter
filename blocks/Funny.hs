@@ -1,18 +1,23 @@
 module Funny where
 import Simulator
+import Data.Graph
 
 data Funny =
     Funny {
-        funSim :: SimObj
+        funSim :: Vertex
     } |
-    FunnyLink {
-        funSim :: SimObj,
-        funLink :: Funny
+    FunnyLine {
+        funSim :: Vertex,
+        funOther :: Vertex
     }
     
-funPos fun = simPos $ funSim fun
-    
-funSimulate dt (Funny sim) = Funny (simulate dt sim)
-funSimulate dt (FunnyLink sim link) = FunnyLink (simulate dt sim) link
+--funPos fun = simPos $ funSim fun
 
-newFunLinearMove pos vel = Funny $ newSimLinearMove pos vel
+funBlockPosis sims (Funny sim) = [simPos $ sims !! sim]
+funBlockPosis sims (FunnyLine a b) =
+    [apos, midpos, bpos]
+    where
+        apos = simPos $ sims !! a
+        bpos = simPos $ sims !! b
+        midpos = apos + 0.5 * (bpos - apos)
+

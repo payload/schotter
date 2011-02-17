@@ -21,6 +21,8 @@ newSimObj pos = SimObj pos (\dt s -> s)
 newSimLinearMove pos vel = SimObj pos $ aniLinearMove vel
 newSimSinus pos max time offset = SimObjTime pos (aniSinus pos max time) offset
 
+simulateStuff dt stuff = map (simulate dt) stuff
+
 simulate dt s = (simAni s) dt s
 
 aniLinearMove v dt s = s { simPos = simPos s + Vec.map (dt*) v }
