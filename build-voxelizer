@@ -1,0 +1,3 @@
+#!/bin/sh
+cd voxelizer
+ghc --make -O3 -o ../run-voxelizer $@ main.hs
