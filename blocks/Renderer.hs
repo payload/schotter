@@ -26,7 +26,7 @@ renderVoxels funny step wireframe = do
     where
         voxels = voxelize funny step
 
-renderVoxel (Voxel v@(Vec3D x y z) size visible clr norm) wireframe =
+renderVoxel (Voxel v@(Vec3F x y z) size visible clr norm) wireframe =
     preservingMatrix $ do
     translate $ vec2Vector3 v
     materialAmbient FrontAndBack $= vec2Color4F clr 1

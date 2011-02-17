@@ -16,7 +16,7 @@ kmFunnies i uhhref = do
     --    uhhFunnyIndex = (uhhFunnyIndex uhh + i) `mod` length uhhFunnies })
     return ()
         
-kmStep :: Double -> IORef Uhh -> IO ()
+kmStep :: Float -> IORef Uhh -> IO ()
 kmStep f uhhref = do return ()
 --    modifyUhh uhhref
 --        (\uhh -> uhh { uhhStep = f * uhhStep uhh })

@@ -1,23 +1,24 @@
 module Vec where
 import Graphics.Rendering.OpenGL
+
 import Data.Vec.Packed
+import qualified Data.Vec as Vec
+
 import GHC.Float
 
-vec0 = Vec3D 0 0 0
-vecX = Vec3D 1 0 0
-vecY = Vec3D 0 1 0
-vecZ = Vec3D 0 0 1
+vec0 = Vec3F 0 0 0
+vecX = Vec3F 1 0 0
+vecY = Vec3F 0 1 0
+vecZ = Vec3F 0 0 1
 
-vec2Vector3 (Vec3D x y z) = Vector3 x y z
-vec2Vertex3 (Vec3D x y z) = Vertex3 x y z
-vec2Color4 (Vec3D x y z) a = Color4 x y z a
-vec2Normal3 (Vec3D x y z) = Normal3 x y z
+vec2Vector3 (Vec3F x y z) = Vector3 x y z
+vec2Vertex3 (Vec3F x y z) = Vertex3 x y z
+vec2Color4 (Vec3F x y z) a = Color4 x y z a
+vec2Normal3 (Vec3F x y z) = Normal3 x y z
+vec2Vertex4 (Vec3F x y z) w = Vertex4 x y z w
 
-vecD2F (Vec3D x y z) = Vec3F (double2Float x) (double2Float y) (double2Float z)
+vec2Vertex3D v = vec3D2Vertex3D $ Vec.map (fromRational . toRational) v
+vec3D2Vertex3D (Vec3D x y z) = Vertex3 x y z
 
-vec2Color4F v a = f $ vecD2F v
-    where f (Vec3F x y z) = Color4 x y z a
-
-vec2Vertex4F v w = f $ vecD2F v
-    where f (Vec3F x y z) = Vertex4 x y z w
-
+vec2Vector3D v = vec3D2Vector3D $ Vec.map (fromRational . toRational) v
+vec3D2Vector3D (Vec3D x y z) = Vector3 x y z

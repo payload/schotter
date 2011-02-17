@@ -13,14 +13,14 @@ display uhhref = do
     matrixMode $= (Modelview 0)
     loadIdentity
     lookAt 
-        (vec2Vertex3 $ uhhCamPos uhh)
-        (Vertex3 (0::GLdouble) 0 0)
-        (Vector3 (0::GLdouble) 1 0)
-    position (Light 0) $= vec2Vertex4F light0Pos 0
+        (vec2Vertex3D $ uhhCamPos uhh)
+        (vec2Vertex3D $ vec0)
+        (vec2Vector3D $ vecY)
+    position (Light 0) $= vec2Vertex4 light0Pos 0
     render uhh
     flush
         
 render uhh = do
     callList $ uhhDisplayList uhh
     
-light0Pos = Vec3D 1 0 0
+light0Pos = Vec3F 1 0 0

@@ -34,8 +34,8 @@ main =
     --shadeModel $= Flat
     
     uhh <- newUhh 
-        (Vec3D (-10) 10 (-10))
-        (Vec3D 0 0 0)
+        (Vec3F (-10) 10 (-10))
+        (Vec3F 0 0 0)
     uhhref <- newIORef uhh
     updateUhh uhhref
     

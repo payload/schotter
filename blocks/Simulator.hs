@@ -8,13 +8,13 @@ import Debug.Trace
 
 data SimObj =
     SimObj {
-        simPos :: Vec3D,
+        simPos :: Vec3F,
         simAni :: (SimObj -> SimObj)
     } |
     SimObjTime {
-        simPos :: Vec3D,
+        simPos :: Vec3F,
         simAni :: (SimObj -> SimObj),
-        simTime :: Double
+        simTime :: Float
     }
 
 newSimObj pos ani = SimObj pos ani

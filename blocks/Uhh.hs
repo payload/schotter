@@ -11,8 +11,8 @@ import Simulator
 
 -- Uhh
 data Uhh = Uhh {
-    uhhCamPos :: Vec3D,
-    uhhLookAt :: Vec3D,
+    uhhCamPos :: Vec3F,
+    uhhLookAt :: Vec3F,
     uhhDisplayList :: DisplayList,
     uhhWireframe :: Bool,
     uhhSimStuff :: [SimObj]
@@ -23,7 +23,7 @@ uhhDefaultRender uhh =
 
 uhhDefaultSimStuff = 
     concat
-    [[newSimSinus (Vec3D (-10 + x) 0 (-10 + y)) (Vec3D 0 1 0) 1 (x+y)
+    [[newSimSinus (Vec3F (-10 + x) 0 (-10 + y)) (Vec3F 0 1 0) 1 (x+y)
         | x <- take (floor n) $ iterate (1 +) 0]
         | y <- take (floor n) $ iterate (1 +) 0]
     where
