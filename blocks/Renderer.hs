@@ -13,10 +13,11 @@ renderBlock (BlockyColored v (Vec4F r g b a)) = preservingMatrix $ do
     translate $ vec2Vector3 $ Vec.map fromIntegral v
     color $ Color4 r g b a
     renderObject Solid $ Cube 1
-    color $ Color3 (0::GLfloat) 0 0
-    renderObject Wireframe $ Cube 1.01
+--    color $ Color3 (0::GLfloat) 0 0
+--    renderObject Wireframe $ Cube 1.01
 
-renderBlocks blocks = mapM_ renderBlock (blocksColorize blocks colors)
+renderBlocks blocks@[BlockyColored _ _] = mapM_ renderBlock blocks
+renderBlocks blocks@[Blocky _] = mapM_ renderBlock (blocksColorize blocks colors)
     where
         colors = cycle [
             Vec4F 0 0.5 0 1

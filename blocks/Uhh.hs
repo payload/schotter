@@ -5,7 +5,7 @@ import Data.Vec.Packed
 
 import Renderer
 import Clean
-import UnsaneDefaults
+import InsaneDefaults
 
 -- Uhh
 data Uhh = Uhh {

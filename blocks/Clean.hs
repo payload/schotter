@@ -3,15 +3,17 @@ import Data.Vec.Packed
 import qualified Data.Vec as Vec
 import Data.Graph
 import Data.List
+import Data.IntMap (IntMap)
+import qualified Data.IntMap as IntMap
 
 data Ühh =
     Ühh {
-        ühhSimmies :: [Simmy],
+        ühhSimmies :: IntMap Simmy,
         ühhFunnies :: [Funny]
     }
 
 ühhSimulate dt ühh = 
-    ühh { ühhSimmies = map (simmySimulate dt) (ühhSimmies ühh) }
+    ühh { ühhSimmies = IntMap.map (simmySimulate dt) (ühhSimmies ühh) }
 
 ühhBlocks ühh = map (funnyBlocks (ühhSimmies ühh)) (ühhFunnies ühh)
 
@@ -44,16 +46,21 @@ data Funny =
     FunnyLine {
         funA :: Vertex,
         funB :: Vertex
+    } |
+    FunnyStatic {
+        funPos :: Vec3I,
+        funColor :: Vec4F
     }
     
 vecF2I (Vec3F x y z) = Vec3I (round x) (round y) (round z)
     
-funnyBlocks simmies (Funny sim) = [Blocky $ vecF2I $ simPos $ simmies !! sim]
+funnyBlocks simmies (Funny sim) = [Blocky $ vecF2I $ simPos $ simmies IntMap.! sim]
 funnyBlocks simmies (FunnyLine a b) = 
     map Blocky (rasterizeLine apos bpos)
     where
-        apos = simPos $ simmies !! a
-        bpos = simPos $ simmies !! b
+        apos = simPos $ simmies IntMap.! a
+        bpos = simPos $ simmies IntMap.! b
+funnyBlocks _ (FunnyStatic pos clr) = [BlockyColored pos clr]
 
 rasterizeLine a b =
     nub ivecs
@@ -61,20 +68,6 @@ rasterizeLine a b =
         diff = (b - a)
         dist = Vec.norm diff 
         n = Vec.normalize diff
-        vecs = take (round dist) (iterate (n +) a)
+        vecs = take (ceiling dist) (iterate (n +) a)
         ivecs = map vecF2I vecs
 
-{-
-d = 2×Δy – Δx
-ΔO = 2×Δy
-ΔNO = 2×(Δy − Δx)
-y = ya
-Pixel (xa, ya) einfärben
-Für jedes x von xa+1 bis xe
-    Wenn d ≤ 0
-        d = d + ΔO
-    ansonsten
-        d = d + ΔNO
-        y = y + 1
-    Pixel (x, y) einfärben
--}
